@@ -1,0 +1,67 @@
+.App {
+    text-align: center;
+    overflow: auto;
+    background-color: #00DFC8
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: #414042;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-content {
+    background-color: #fff;
+    border: 1px solid black
+}
+
+.modal-content.btn {
+    border: 2px solid grey;
+    background-color: white
+}
+
+.modal-content.form-control{
+    border: 2px solid 
+}
+
+.error {
+    color: red;
+    background: none
+}
+
+.mytext {
+    color:#00DFC8 
+}
+
+.btn-special {
+    background-color: #FFE0B2;
+    cursor: pointer
+}
+
+    .btn-special:hover {
+        background-color: #FFF3E0;
+    }

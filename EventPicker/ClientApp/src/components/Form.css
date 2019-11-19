@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+.box {
+    width: 500px;
+    background-color: #cfd8dc;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: inherit;
+    text-align: center;
+    border: 2px solid white;
+    border-radius: 35px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
+    font-family: 'Montserrat', sans-serif;
+}
+
+.pad {
+    background: #F1F2F2;
+    width: 550px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.box h1 {
+    color: inherit;
+    font-weight: 500;
+    margin-top: 20px
+}
+
+.box .error {
+    text-align: left;
+    margin-left: 16%
+}
+
+.box input[type = "email"], .box input[type = "password"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 1px solid;
+    border-color: #000;
+    padding: 14px 10px;
+    width: 350px;
+    outline: none;
+    color: black;
+    border-radius: 24px;
+    transition: 0.25s;
+}
+
+    .box input[type = "email"]:focus, .box input[type = "password"]:focus {
+        width: 400px;
+        background-color: white;
+        border: 1px solid black
+    }
+
+.box button {
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 1px solid black;
+    padding: 14px 40px 14px 40px;
+    outline: none;
+    /*color: #007bff;*/
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+}
+
+    .box button:hover {
+        background: #fff;
+        border-color: white;
+    }

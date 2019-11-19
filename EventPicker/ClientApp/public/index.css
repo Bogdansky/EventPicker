@@ -1,0 +1,42 @@
+#main{
+    height: 720px;
+    overflow-x: hidden;
+    overflow-y: auto
+}
+.todo__checkbox {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    -webkit-appearance: none;
+    border: 1px solid #d8d8d8;
+    border-radius: 16px;
+    outline: none;
+    position: relative;
+    top: 5px;
+}
+
+    .todo__checkbox:checked:after {
+        content: 'X';
+        color: #d8d8d8;
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 10px;
+        width: 16px;
+        height: 16px;
+        text-align: center;
+        line-height: 16px;
+    }
+
+    .todo__checkbox:hover {
+        color: #F44336;
+        border-color: #F44336;
+        cursor: pointer;
+    }
+
+        .todo__checkbox:hover:checked:after {
+            color: #F44336;
+            cursor: pointer;
+        }
