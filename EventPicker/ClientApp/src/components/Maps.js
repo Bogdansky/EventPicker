@@ -1,6 +1,7 @@
 ﻿import React from 'react'
 import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
 import './Map.css'
+import AddMarkerInfo from './AddMarkerInfo'
 
 export class Maps extends React.Component {
     
@@ -26,16 +27,13 @@ export class Maps extends React.Component {
 
     addMarker(e){
         let markers = this.state.markers;
-        markers.push(e.latlng); // latlng {lat:number,lng:number}
+        markers.push(e.latlng);
         this.setState({markers});
     }
 
     deleteMarker(e){
         let markers = this.state.markers;
         let index = markers.indexOf(e.latlng);
-        console.log(e.latlng);
-        console.log(index);
-        console.log(markers);
         if (index > -1){
             markers.splice(index, 1);
             this.setState({markers});
@@ -43,7 +41,9 @@ export class Maps extends React.Component {
     }
 
     render() {
-        this.getGeoLocation();
+        if (!this.state.ownLocation){
+            this.getGeoLocation();
+        }
         return (
             <LeafletMap
                 center={this.state.ownLocation}
@@ -62,10 +62,11 @@ export class Maps extends React.Component {
                     url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
                 />
                 {this.state.markers.map(marker => 
-                    <Marker position={marker} ondblclick={this.deleteMarker}>
+                    <Marker position={marker} oncontextmenu={this.deleteMarker}>
                         <Popup>
                             <h1>This is Jonny!</h1>
                             <img height='100px' width='200px' src='http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg'></img>
+                            <AddMarkerInfo/>
                         </Popup>
                     </Marker>
                 )}
