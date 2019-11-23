@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import {Popup} from 'react-leaflet'
+import AddMarkerInfo from './AddMarkerInfo'
 
 export default class MarkerInfo extends React.Component {
     static displayName = MarkerInfo.name;
@@ -18,14 +19,10 @@ export default class MarkerInfo extends React.Component {
             }
         }
 
-        this.showModal = this.showModal.bind(this);
-        this.hideModal = this.hideModal.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.setInfo = this.setInfo.bind(this);
     }
 
     setInfo(info, cb){
-        console.log("Trying to set info");
         this.setState({info}, cb);
     }
 
