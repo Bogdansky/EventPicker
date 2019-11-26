@@ -20,8 +20,8 @@ export class SignIn extends React.Component {
         e.preventDefault();
         try {
             let body = JSON.stringify({
-                "email": this.state.email,
-                "password": this.state.password
+                Login: this.state.email,
+                Password: this.state.password
             });
             console.log(body);
             let options = {
@@ -32,7 +32,7 @@ export class SignIn extends React.Component {
                 mode: 'cors',
                 body
             };
-            fetch(`https://reading-organizer.azurewebsites.net/api/users/signin`, options)
+            fetch(`/token`, options)
             .then(response => response.json())
             .then(data => {
                 console.log(data);

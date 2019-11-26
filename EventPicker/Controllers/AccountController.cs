@@ -23,12 +23,9 @@ namespace EventPicker.Controllers
         };
 
         [HttpPost("/token")]
-        public async Task Token()
+        public async Task Token([FromBody]Person person)
         {
-            var username = Request.Form["username"];
-            var password = Request.Form["password"];
-
-            var identity = GetIdentity(username, password);
+            var identity = GetIdentity(person.Login, person.Password);
             if (identity == null)
             {
                 Response.StatusCode = 400;
