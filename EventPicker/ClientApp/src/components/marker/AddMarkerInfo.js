@@ -14,7 +14,7 @@ export default class AddMarkerInfo extends React.Component {
             description: "",
             category: "",
             imageUrl: "https://bankoboev.ru/storage/thumbnail/bankoboev.ru-155581.jpg"
-        }
+        };
 
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
@@ -31,13 +31,13 @@ export default class AddMarkerInfo extends React.Component {
     }
 
     setUpdates(){
-        const info = {
+        let info = {
             title: this.state.title,
             description:this.state.description,
             category:this.state.category,
             imageUrl:this.state.imageUrl,
         }
-        console.log(info);
+        
         this.props.setInfo(info, this.hideModal);
     }
 

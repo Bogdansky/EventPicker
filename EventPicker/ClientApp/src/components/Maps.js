@@ -1,7 +1,7 @@
 ﻿import React from 'react'
 import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
 import './Map.css'
-import AddMarkerInfo from './AddMarkerInfo'
+import MarkerInfo from './marker/MarkerInfo';
 
 export class Maps extends React.Component {
     
@@ -63,11 +63,7 @@ export class Maps extends React.Component {
                 />
                 {this.state.markers.map(marker => 
                     <Marker position={marker} oncontextmenu={this.deleteMarker}>
-                        <Popup>
-                            <h1>This is Jonny!</h1>
-                            <img height='100px' width='200px' src='http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg'></img>
-                            <AddMarkerInfo/>
-                        </Popup>
+                        <MarkerInfo />
                     </Marker>
                 )}
             </LeafletMap>
