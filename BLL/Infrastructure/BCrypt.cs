@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Reading_organizer.BLL.Infrastructure
+namespace BLL.Infrastructure
 {
     public class BCrypt
     {

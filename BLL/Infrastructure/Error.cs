@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reading_organizer.BLL.Infrastructure
+namespace BLL.Infrastructure
 {
     [Serializable]
     public class Error
@@ -12,7 +12,7 @@ namespace Reading_organizer.BLL.Infrastructure
 
         public override string ToString()
         {
-            return string.Concat("{",$"\"statusCode\":\"{StatusCode}\",\"message\":\"{Message}\"", "}");
+            return $"{{ \"statusCode\":\"{StatusCode}\",\"message\":\"{Message}\"}}";
         }
     }
 }

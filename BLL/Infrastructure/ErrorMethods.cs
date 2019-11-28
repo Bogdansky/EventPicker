@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reading_organizer.BLL.Infrastructure
+namespace BLL.Infrastructure
 {
     public static class ErrorMethods
     {

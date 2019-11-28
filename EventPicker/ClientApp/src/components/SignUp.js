@@ -6,7 +6,7 @@ export class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
+            login: "",
             password: "",
             tryPassword: "",
             error: {},
@@ -30,8 +30,8 @@ export class SignUp extends React.Component {
                 return;
             }
             let body = JSON.stringify({
-                "email": this.state.email,
-                "password": this.state.password
+                login: this.state.email,
+                password: this.state.password
             });
             console.log(body);
             let options = {
@@ -42,7 +42,7 @@ export class SignUp extends React.Component {
                 mode: 'cors',
                 body
             };
-            fetch(`https://reading-organizer.azurewebsites.net/api/users/signup`, options)
+            fetch(`/api/users/signup`, options)
                 .then(response => response.json())
                 .then(data => {
                     if (data.token) {
@@ -66,7 +66,6 @@ export class SignUp extends React.Component {
                 });
         }
         catch (e) {
-            console.log('Ошибка');
             this.setState({
                 error: {
                     message: "Some problems with connection",

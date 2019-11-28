@@ -13,5 +13,8 @@ namespace DAL.Entities
         public ICollection<Category> Categories { get; set; }
         
         public Coordinates Coordinates { get; set; }
+
+        public int? UserId { get; set; }
+        public User User { get; set; }
     }
 }

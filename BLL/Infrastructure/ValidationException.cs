@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reading_organizer.BLL.Infrastructure
+namespace BLL.Infrastructure
 {
     class ValidationException : Exception
     {

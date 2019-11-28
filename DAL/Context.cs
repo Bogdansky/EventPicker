@@ -3,7 +3,7 @@ using DAL.Entities;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace Reading_organizer.DAL
+namespace DAL
 {
     public class Context : DbContext
     {
@@ -30,15 +30,15 @@ namespace Reading_organizer.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>() // one-to-one
-                .HasOne(u => u.UserInfo)
-                .WithOne(ui => ui.User)
-                .HasForeignKey<UserInfo>(ui => ui.UserId)
+            modelBuilder.Entity<Mark>() // one-to-one
+                .HasOne(m => m.Coordinates)
+                .WithOne(c => c.Mark)
+                .HasForeignKey<Coordinates>(c => c.MarkId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<User>()
-                .HasMany(u => u.Progress)
-                .WithOne(p => p.User)
-                .HasForeignKey(p => p.UserId)
+                .HasMany(u => u.Marks)
+                .WithOne(m => m.User)
+                .HasForeignKey(m => m.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Book>() // one-to-many
                 .HasMany(b => b.Progress)

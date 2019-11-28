@@ -16,7 +16,7 @@ namespace DAL.Entities
             new Random().NextBytes(saltBytes);
             return new User
             {
-                Email = email ?? throw new ArgumentNullException(nameof(email)),
+                Login = email ?? throw new ArgumentNullException(nameof(email)),
                 Salt = Convert.ToBase64String(saltBytes),
                 Password = password == null ? throw new ArgumentNullException(nameof(password)) : ComputeHash(Concat(password, saltBytes))
             };
@@ -45,12 +45,10 @@ namespace DAL.Entities
         }
 
         public int Id { get; set; }
-        [EmailAddress]
-        public string Email { get; set; }
+        public string Login { get; set; }
         public string Password { get; set; }
         public string Salt { get; set; }
-        public UserInfo UserInfo { get; set; }
 
-        public List<Progress> Progress { get; set; }
+        public List<Mark> Marks { get; set; }
     }
 }

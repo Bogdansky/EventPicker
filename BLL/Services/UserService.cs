@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Reading_organizer.DAL;
-using Reading_organizer.DAL.Entities;
+using DAL;
+using DAL.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using BLL.DTO;
 using BLL;
 
-namespace Reading_organizer.BLL.Services
+namespace BLL.Services
 {
     public class UserService : IService<UserDTO>
     {
@@ -26,7 +25,7 @@ namespace Reading_organizer.BLL.Services
 
         public async Task<UserDTO> Authenticate(UserDTO obj, string secretKey)
         {
-            var user = await Read(obj.Email, obj.Password);
+            var user = await Read(obj.Login, obj.Password);
 
             if (user is null)
             {
@@ -64,12 +63,12 @@ namespace Reading_organizer.BLL.Services
 
         async public Task<string> Create(UserDTO obj)
         {
-            var exist = await Context.Users.CountAsync(u => u.Email == obj.Email) > 0;
+            var exist = await Context.Users.CountAsync(u => u.Login == obj.Login) > 0;
             if (exist)
             {
                 return "User is exist";
             }
-            var newUser = await Context.Users.AddAsync(User.CreateUser(obj.Email, obj.Password));
+            var newUser = await Context.Users.AddAsync(User.CreateUser(obj.Login, obj.Password));
             var result = await Context.SaveChangesAsync();
             return result > 0 ? newUser.Entity.Id.ToString() : "error";
         }
@@ -92,21 +91,19 @@ namespace Reading_organizer.BLL.Services
             return user == null ? null : new UserDTO
             {
                 Id = user.Id,
-                Email = user.Email,
-                Password = user.Password,
-                UserInfo = UserInfoDTO.ToUserInfoDTO(user.UserInfo)
+                Login = user.Login,
+                Password = user.Password
             };
         }
 
         async public Task<UserDTO> Read(string email, string password)
         {
-            var user = await Context.Users.Include(u => u.UserInfo).FirstOrDefaultAsync(u => u.Email.Equals(email) && u.Verify(password));
+            var user = await Context.Users.Include(u => u.UserInfo).FirstOrDefaultAsync(u => u.Login.Equals(email) && u.Verify(password));
             return user == null ? null : new UserDTO
             {
                 Id = user.Id,
-                Email = user.Email,
-                Password = user.Password,
-                UserInfo = user.UserInfo == null ? null : new UserInfoDTO(user.UserInfo.Id, user.UserInfo.Name, user.UserInfo.Surname)
+                Login = user.Login,
+                Password = user.Password
             };
         }
 
@@ -115,9 +112,8 @@ namespace Reading_organizer.BLL.Services
             return await Context.Users.Include(u => u.UserInfo).Select(u => new UserDTO
             {
                 Id = u.Id,
-                Email = u.Email,
-                Password = null,
-                UserInfo = UserInfoDTO.ToUserInfoDTO(u.UserInfo)
+                Login = u.Login,
+                Password = null
             }).ToArrayAsync();
         }
 
@@ -126,7 +122,7 @@ namespace Reading_organizer.BLL.Services
             try
             {
                 var user = await Context.Users.FindAsync(id);
-                user.Email = obj.Email;
+                user.Login = obj.Login;
                 return await Context.SaveChangesAsync();
             }
             catch
@@ -153,7 +149,6 @@ namespace Reading_organizer.BLL.Services
                 var idSequence = lostProgress.Distinct(new ProgressComparer()).Select(p => p.BookId).ToList();
                 var books = Context.Books.Where(b => idSequence.Contains(b.Id)).ToList();
                 string message = GetHtml(lostProgress, books);
-                await (new EmailService()).SendEmailAsync(user.Email, "Missed tasks", message);
             }
             catch
             {

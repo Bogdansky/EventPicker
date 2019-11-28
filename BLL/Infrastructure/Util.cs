@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reading_organizer.BLL.Infrastructure
+namespace BLL.Infrastructure
 {
     public class Util
     {
