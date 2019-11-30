@@ -49,14 +49,14 @@ namespace EventPicker.Controllers
             {
                 return new JsonResult(new { StatusCode = 400, Message = result });
             }
-            var authResult = result == "error" ? null : await _usersService.Authenticate(body, Helpers.AppSettings.GetSecretKey());
+            var authResult = result == "error" ? null : await _usersService.Authenticate(body, AppSettings.GetSecretKey());
             if (authResult != null)
             {
                 Response.Cookies.Append("token", authResult.Token);
             }
             else
             {
-                return new JsonResult(ErrorHelper.GetError(Enums.ErrorEnum.InternalServerError));
+                return new JsonResult(ErrorHelper.GetError(Enum.ErrorEnum.InternalServerError));
             }
             return Ok(authResult);
         }
@@ -68,7 +68,6 @@ namespace EventPicker.Controllers
             if (authResult != null)
             {
                 Response.Cookies.Append("token", authResult.Token);
-                _ = Task.Run(() => _usersService.CheckTasks(authResult.Id));
                 return Ok(authResult);
             }
             return new JsonResult(new { StatusCode = 400, Message = "Incorrect email or password" });
