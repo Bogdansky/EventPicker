@@ -10,6 +10,7 @@ namespace BLL.DTO
     {
         public int Id { get; set; }
         public string Login { get; set; }
+        public string Nickname { get; set; }
         public string Password { get; set; }
         public string Token { get; set; }
 
@@ -21,10 +22,5 @@ namespace BLL.DTO
                 Login = user.Login
             };
         }
-
-        //public override string ToString()
-        //{
-        //    return $"{UserInfo.Surname} {UserInfo.Name}";
-        //}
     }
 }
