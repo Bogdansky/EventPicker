@@ -8,8 +8,7 @@ export default class AddUserInfo extends Component {
         super(props);
 
         this.state = {
-            name: '',
-            surname: '',
+            nickname: '',
             show: false
         }
 
@@ -20,15 +19,7 @@ export default class AddUserInfo extends Component {
     }
 
     onChange(e) {
-        if (e.target.name === "name") {
-            this.setState({
-                name: e.target.value
-            });
-        } else {
-            this.setState({
-                surname: e.target.value
-            });
-        }
+        this.setState({nickname: e.target.value});
     }
 
     handleOpen(e) {
@@ -40,26 +31,23 @@ export default class AddUserInfo extends Component {
     }
 
     handleSave() {
-        let body = JSON.stringify({
-            "name": this.state.name,
-            "surname": this.state.surname
-        });
         let options = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            mode: 'cors',
-            body
+            body: JSON.stringify({
+                nickname: this.state.nickname
+            })
         };
         var userId = localStorage.getItem('userId') || 0;
-        fetch(`https://reading-organizer.azurewebsites.net/api/userinfo/${userId}`, options)
+        fetch(`/api/users/${userId}`, options)
             .then(res => res.json())
             .then(res => {
                 if (res.statusCode) {
                     res = null;
                 }
-                this.setState({ show: false }, this.props.setUserInfo(res));
+                this.setState({ show: false }, this.props.setNickname(this.state.nickname));
             })
             .catch(error => {
                 console.log(error);
@@ -78,11 +66,7 @@ export default class AddUserInfo extends Component {
                         <form className="col-12" onSubmit={this.handleSubmit}>
                             <div className="form-group">
                                 <label className="form-text">Name</label>
-                                <input type="text" className="form-control" name="name" value={this.state.name} onChange={this.onChange} placeholder="Name" required />
-                            </div>
-                            <div className="form-group">
-                                <label className="form-text">Surname</label>
-                                <input type="text" className="form-control" name="surname" value={this.state.surname} onChange={this.onChange} placeholder="Surname" required />
+                                <input type="text" className="form-control" name="nickname" value={this.state.nickname} onChange={this.onChange} placeholder="Name" required />
                             </div>
                         </form>
                     </Modal.Body>

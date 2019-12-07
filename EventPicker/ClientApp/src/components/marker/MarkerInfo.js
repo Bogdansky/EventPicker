@@ -9,13 +9,12 @@ export default class MarkerInfo extends React.Component {
         super(props);
 
         this.state = {
-            status: "add",
             shown: false,
             info: {
-                title: "This is Jonny!",
-                description: "no description",
-                category: "no category",
-                imageUrl: "https://bankoboev.ru/storage/thumbnail/bankoboev.ru-155581.jpg"
+                title: this.props.title || "This is Jonny!",
+                description: this.props.description || "no description",
+                categories: this.props.categories || "",
+                imageUrl: this.props.imageUrl || "https://bankoboev.ru/storage/thumbnail/bankoboev.ru-155581.jpg"
             }
         }
 
@@ -30,10 +29,10 @@ export default class MarkerInfo extends React.Component {
         return (
           <Popup>
                 <h1>{this.state.info.title}</h1>
-                <small>Category: {this.state.info.category}</small>
+                <small style={{display: this.state.info.categories ? "inherit" : "none"}}>Category: {this.state.info.categories}</small>
                 <p>{this.state.info.description}</p>
                 <img height='100px' width='200px' src={this.state.info.imageUrl}></img>
-                <AddMarkerInfo setInfo={this.setInfo}/>
+                <AddMarkerInfo display={this.props.userId == localStorage.getItem("userId") ? "inherit" : "none"} markerId={this.props.markerId} info={this.state.info} setInfo={this.setInfo}/>
           </Popup>  
         );
     }

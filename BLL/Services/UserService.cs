@@ -103,7 +103,8 @@ namespace BLL.Services
             {
                 Id = user.Id,
                 Login = user.Login,
-                Password = user.Password
+                Password = user.Password,
+                Nickname = user.Nickname
             };
         }
 
@@ -121,7 +122,7 @@ namespace BLL.Services
             try
             {
                 var user = await Context.Users.FindAsync(id);
-                user.Login = obj.Login;
+                user.Nickname = obj.Nickname ?? user.Nickname;
                 return await Context.SaveChangesAsync();
             }
             catch

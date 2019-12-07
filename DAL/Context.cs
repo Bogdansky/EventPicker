@@ -8,10 +8,9 @@ namespace DAL
     public class Context : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<UserInfo> UserInfo { get; set; }
-        public DbSet<Progress> Progress { get; set; }
-        public DbSet<Task> Tasks { get; set; }
-        public DbSet<Book> Books { get; set; }
+        public DbSet<Mark> Marks { get; set; }
+        public DbSet<Coordinates> Coordinates { get; set; }
+        public DbSet<Category> Categories { get; set; }
         
         public Context()
         {
@@ -34,21 +33,11 @@ namespace DAL
                 .HasOne(m => m.Coordinates)
                 .WithOne(c => c.Mark)
                 .HasForeignKey<Coordinates>(c => c.MarkId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Marks)
                 .WithOne(m => m.User)
                 .HasForeignKey(m => m.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Book>() // one-to-many
-                .HasMany(b => b.Progress)
-                .WithOne(p => p.Book)
-                .HasForeignKey(p => p.BookId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Progress>() // one-to-one
-                .HasOne(p => p.Task)
-                .WithOne(t => t.Progress)
-                .HasForeignKey<Task>(t => t.ProgressId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

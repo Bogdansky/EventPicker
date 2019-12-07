@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Helpers;
 
 namespace EventPicker
 {
@@ -14,6 +15,7 @@ namespace EventPicker
     {
         public static void Main(string[] args)
         {
+            AppSettings.SetSecretKey(SecretGenerator.GetSecretKey());
             CreateWebHostBuilder(args).Build().Run();
         }
 

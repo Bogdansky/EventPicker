@@ -32,24 +32,33 @@ export class NavMenu extends Component {
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow btn-group">
-                <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/map">Maps</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/boards">My books</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/library">Library</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/signup">Sign up</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/signin">Log in</NavLink>
-                </NavItem>
+                {
+                  localStorage.getItem("userId") ? 
+                  <React.Fragment>
+                    <NavItem>
+                      <NavLink tag={Link} className="text-light" to="/">Home</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} className="text-light" to="/events">Events</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} className="text-light" to="/map">Maps</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} className="text-light" onClick={this.props.onLogout} to="/">Logout</NavLink>
+                    </NavItem>
+                  </React.Fragment>
+                   : 
+                  <React.Fragment>
+                    <NavItem>
+                        <NavLink tag={Link} className="text-light" to="/signup">Sign up</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} className="text-light" to="/signin">Log in</NavLink>
+                    </NavItem>
+                  </React.Fragment>
+                }
+                
               </ul>
             </Collapse>
           </Container>

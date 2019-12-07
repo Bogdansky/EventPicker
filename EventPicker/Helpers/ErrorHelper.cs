@@ -12,6 +12,7 @@ namespace Helpers
 
         private static Error[] Errors => new[]
         {
+            new Error {StatusCode = 304, Message = "Not modified" },
             new Error {StatusCode = 400, Message = "Bad request"},
             new Error {StatusCode = 401, Message = "User is unathorized"},
             new Error {StatusCode = 403, Message = "Forbidden"},

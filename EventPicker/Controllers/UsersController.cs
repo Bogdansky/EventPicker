@@ -75,9 +75,14 @@ namespace EventPicker.Controllers
 
         // PUT api/users/5
         [HttpPut("{id}")]
-        public async void Put(int id, [FromBody] UserDTO value)
+        public async Task<IActionResult> Put([FromRoute]int id, [FromBody] UserDTO value)
         {
             int result = await _usersService.Update(id, value);
+            if (result > 0)
+            {
+                return new JsonResult(new { Message = "Update success"});
+            }
+            return new JsonResult(ErrorHelper.GetError(Enum.ErrorEnum.NotModified));
         }
 
         // DELETE api/users/5

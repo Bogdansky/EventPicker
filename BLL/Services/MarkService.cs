@@ -59,7 +59,8 @@ namespace BLL.Services
                 var result = await Context.SaveChangesAsync();
                 return result == 0 ? null : new MarkDTO
                 {
-                    Id = mark.Entity.Id
+                    Id = mark.Entity.Id,
+                    UserId = userId
                 };
             }
             catch
@@ -70,11 +71,12 @@ namespace BLL.Services
 
         public async Task<MarkDTO> Delete(int markId, int userId)
         {
-            var mark = await Context.Marks.Where(m => m.Id == markId && m.UserId == userId).FirstOrDefaultAsync();
+            var mark = await Context.Marks.Include(m => m.Coordinates).Where(m => m.Id == markId && m.UserId == userId).FirstOrDefaultAsync();
             if (mark == null)
             {
                 return null;
             }
+            _ = Context.Remove(mark.Coordinates);
             _ = Context.Remove(mark);
             return await Context.SaveChangesAsync() > 0 ? new MarkDTO() : null;
         }
@@ -88,7 +90,7 @@ namespace BLL.Services
         {
             try
             {
-                var list = await Context.Marks.Include(m => m.Categories).Include(m => m.User).AsNoTracking().ToListAsync();
+                var list = await Context.Marks.Include(m => m.Categories).Include(m => m.User).Include(m => m.Coordinates).AsNoTracking().ToListAsync();
                 var result = list.Select(m => new MarkDTO
                 {
                     Id = m.Id,
@@ -97,20 +99,44 @@ namespace BLL.Services
                     ImageUrl = m.ImageUrl,
                     User = new UserDTO
                     {
-                        Id = m.User.Id,
                         Nickname = m.User.Nickname
                     },
-                    Categories = m.Categories == null || m.Categories.Count == 0 ? null : m.Categories?.Select(c => c.Id.ToString() + "_" + c.Name).Aggregate((x, y) => x + y),
+                    Categories = m.Categories == null || m.Categories.Count == 0 ? null : string.Join(",", m.Categories?.Select(c => c.Name)),
                     Coordinates = new CoordinatesDTO
                     {
                         Latitude = m.Coordinates.Latitude,
                         Longitude = m.Coordinates.Longitude
                     },
-
+                    UserId = m.UserId.Value
                 }).ToList();
                 return result;
             }
             catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<object> ReadForView(int page = 0, int offset = 10)
+        {
+            try
+            {
+                var list = await Context.Marks.Include(m => m.Categories).Include(m => m.User).Include(m => m.Coordinates).AsNoTracking().ToListAsync();
+                var result = list.Select(m => new
+                {
+                    Title = m.Title,
+                    Description = m.Description,
+                    Nickname = m.User.Nickname,
+                    Categories = m.Categories == null || m.Categories.Count == 0 ? null : string.Join(",", m.Categories?.Select(c => c.Name)),
+                    Coordinates = new CoordinatesDTO
+                    {
+                        Latitude = m.Coordinates.Latitude,
+                        Longitude = m.Coordinates.Longitude
+                    }
+                }).Skip(offset * page).Take(offset).ToList();
+                return result;
+            }
+            catch (Exception e)
             {
                 return null;
             }
@@ -145,7 +171,7 @@ namespace BLL.Services
 
         public async Task<int> Update(int id, MarkDTO obj)
         {
-            var mark = await Context.Marks.FindAsync(id);
+            var mark = await Context.Marks.Include(m => m.Categories).Where(m => m.Id == id).FirstOrDefaultAsync();
             if(mark == null)
             {
                 return -1;
@@ -153,7 +179,11 @@ namespace BLL.Services
             mark.Title = obj.Title ?? mark.Title;
             mark.Description = obj.Description ?? mark.Description;
             mark.ImageUrl = obj.ImageUrl ?? mark.ImageUrl;
-            
+            mark.Categories = obj.Categories.Split(",").Select(c => new DAL.Entities.Category
+            {
+                Name = c
+            }).ToArray() ?? mark.Categories;
+
             return await Context.SaveChangesAsync();
         }
 

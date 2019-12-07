@@ -8,12 +8,12 @@ export default class AddMarkerInfo extends React.Component {
         super(props);
 
         this.state = {
-            status: "add",
             shown: false,
-            title: "",
-            description: "",
-            category: "",
-            imageUrl: "https://bankoboev.ru/storage/thumbnail/bankoboev.ru-155581.jpg"
+            title: this.props.info.title,
+            description: this.props.info.description,
+            categories: this.props.info.categories,
+            imageUrl: this.props.info.imageUrl,
+            userId: this.props.userId
         };
 
         this.showModal = this.showModal.bind(this);
@@ -34,11 +34,26 @@ export default class AddMarkerInfo extends React.Component {
         let info = {
             title: this.state.title,
             description:this.state.description,
-            category:this.state.category,
+            categories:this.state.categories,
             imageUrl:this.state.imageUrl,
         }
-        
-        this.props.setInfo(info, this.hideModal);
+        let options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(info)
+        };
+        fetch(`/api/mark/${this.props.markerId}`, options)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.statusCode){
+
+            } else {
+                this.props.setInfo(info, this.hideModal);
+            }
+        })
     }
 
     onChange(e){
@@ -49,8 +64,11 @@ export default class AddMarkerInfo extends React.Component {
             case "description":
                 this.setState({description: e.target.value});
                 break;
-            case "category":
-                this.setState({category: e.target.value});
+            case "categories":
+                this.setState({categories: e.target.value});
+                break;
+            case "imageUrl":
+                this.setState({imageUrl: e.target.value});
                 break;
             default:
                 break;
@@ -60,7 +78,7 @@ export default class AddMarkerInfo extends React.Component {
     render(){
         return (
             <Fragment>
-                <Button onClick={this.showModal}>{this.state.status === "add" ? "Add info" : "Modify info"}</Button>
+                <Button style={{display: this.props.display}} onClick={this.showModal}>Modify info</Button>
                 <Modal show={this.state.shown} onHide={this.hideModal}>
                     <Modal.Header>
                         <h2>{this.state.title || "Empty"}</h2>
@@ -78,8 +96,13 @@ export default class AddMarkerInfo extends React.Component {
                             </div>
                             <div className="col">
                                 <label htmlFor="inputNumber">Category</label>
-                                <input type="text" className="form-control" name="category" placeholder="Pups" value={this.state.category} onChange={this.onChange} required />
+                                <input type="text" className="form-control" name="categories" placeholder="Pups" value={this.state.categories} onChange={this.onChange} required />
                                 <small id="emailHelp" className="form-text text-muted">Enter category</small>
+                            </div>
+                            <div className="col">
+                                <label htmlFor="inputNumber">Image url</label>
+                                <input type="text" className="form-control" name="imageUrl" placeholder="Pups" value={this.state.imageUrl} onChange={this.onChange} required />
+                                <small id="emailHelp" className="form-text text-muted">Enter image url</small>
                             </div>
                     </Modal.Body>
                     <Modal.Footer>

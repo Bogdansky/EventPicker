@@ -8,7 +8,7 @@ export class Layout extends Component {
   render () {
     return (
       <div>
-        <NavMenu />
+        <NavMenu onLogout={this.props.onLogout} />
         <Container id='main'>
                 {this.props.children}
         </Container>

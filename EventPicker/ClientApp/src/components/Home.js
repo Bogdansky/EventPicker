@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AddUserInfo from './AddUserInfo'
+import {EventEmitter} from '../events.js'
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -8,37 +9,50 @@ export class Home extends Component {
         super(props);
 
         this.state = {
-            userInfo: JSON.parse(localStorage.getItem('userinfo')),
+            nickname: localStorage.getItem('nickname'),
             userId: localStorage.getItem('userId'),
             token: localStorage.getItem('token')
         };
 
-        this.setUserInfo = this.setUserInfo.bind(this);
+        this.setNickname = this.setNickname.bind(this);
+        this.getGreetings = this.getGreetings.bind(this);
+        this.logoutCallback = this.logoutCallback.bind(this);
+
+        EventEmitter.subscribe("logout", this.logoutCallback);
     }
 
-    setUserInfo(info) {
-        console.log(info.name);
-        localStorage.setItem('userinfo', JSON.stringify(info));
-        this.setState({ userInfo: info });
+    getGreetings(){
+        let person = "";
+
+        if (!this.state.userId){
+            person = "Stranger";
+        } else {
+            person = this.state.nickname || "Unnamed user"
+        }
+        return `Hello, ${person}!`;
+    }
+
+    setNickname(nickname) {
+        console.log("Nickname: " + nickname);
+        localStorage.setItem('nickname', nickname);
+        this.setState({nickname})
+    }
+
+    logoutCallback(){
+        this.setState(this.state);
     }
 
     render() {
-        console.log(this.state.userInfo);
     return (
         <div>
-            <h1>Hello{this.state.userId && this.state.userInfo ? this.state.userInfo.name && this.state.userInfo.surname ? `, ${this.state.userInfo.name} ${this.state.userInfo.surname}` : ', Unnamed User' : ', stranger'}!</h1>
+            <h1>{this.getGreetings()}</h1>
             <div className="btn-group">
-                {this.state.userId && !this.state.userInfo ?
-                    <AddUserInfo setUserInfo={this.setUserInfo} /> : ""
+                {this.state.userId ?
+                    <AddUserInfo setNickname={this.setNickname} /> : ""
                 }
             </div>
-            <div>
-                This application is task manager for those who love to read books and wants to organize their enjoying.<br/>
-                To start you may to click on "Library" to choose book what you want to read. Or click on "My books" if you choice book.<br/>
-                Of course, you need to log in or sign up in the system to track your progress at reading books.
-                Your progress you can watch in section what calls "My books".
-                There are all books that you start to read. System automaticaly build your plan so you don't care about it.
-                If you entered in "My books" you can see covers of books. Click on book which you like to read, enter number of days and click "Read".
+            <div style={{fontSize: '64px'}}>
+                We glad to see you!
             </div>
       </div>
     );

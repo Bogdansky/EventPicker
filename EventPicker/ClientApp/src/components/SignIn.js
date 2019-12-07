@@ -32,14 +32,14 @@ export class SignIn extends React.Component {
                 mode: 'cors',
                 body
             };
-            fetch(`/token`, options)
+            fetch(`/api/users/signin`, options)    
             .then(response => response.json())
             .then(data => {
                 console.log(data);
                 if (data.token) {
                     localStorage.setItem("userId", data.id);
                     localStorage.setItem("token", data.token);
-                    localStorage.setItem("userinfo", JSON.stringify(data.userInfo));
+                    localStorage.setItem("nickname", data.nickname ? data.nickname : "");
                     this.setState({ loggedIn: true });
 
                 } else if (data.statusCode && data.message) {
